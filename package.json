@@ -1,0 +1,26 @@
+{
+  "name": "solarbattles",
+  "version": "1.0.0",
+  "description": "This is the branch for creating the a static github pages client and setting up the server backend that uses socket.io & express for communications",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noahr1/SolarBattles.git"
+  },
+  "author": "tekkitGamer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/noahr1/SolarBattles/issues"
+  },
+  "homepage": "https://github.com/noahr1/SolarBattles#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "http": "^0.0.1-security",
+    "socket.io": "^4.7.2"
+  }
+}
