@@ -9,7 +9,7 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 // Serve static files from the 'public' directory
-app.use(express.static('public'));
+app.use(express.static('docs'));
 
 // Set the environment variable in the rendering context
 app.use((req, res, next) => {
@@ -19,7 +19,7 @@ app.use((req, res, next) => {
   
 // Serve the HTML file and include the environment variable
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html', { environment: res.locals.environment });
+    res.sendFile(__dirname + '/docs/index.html', { environment: res.locals.environment });
 });
 
 // Handle Socket.io connections
