@@ -4,22 +4,32 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Solar Battles</title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
         <script type="module" defer src="./scripts/script.js"></script>
         <style>
+            #container {
+                width: 75%;
+                height: 75%;
+                place-self: center;
+            }
             #renderer {
                 width: 100%;
-                height: 100%;
             }
             html, body {
+                display: flex;
                 margin: 0;
                 padding: 0;
                 width: 100%;
                 height: 100%;
+                overflow: hidden;
+                justify-content: center;
             }
         </style>
     </head>
     <body>
-        <canvas id="renderer"></canvas>
+        <div id="container">
+            <canvas id="renderer"></canvas>
+            <div>
+            </div>
+        </div>
     </body>
 </html>
