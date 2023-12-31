@@ -1,35 +1,45 @@
 import "./World/Square/Square.js";
+import "./World/Square/Structure.js";
 import { Planet } from "./World/Solar_System/Planet.js";
 import { SquareRegistry } from "./World/Square/Square.js";
+import { SolarMass } from "./World/Solar_System/SolarMass.js";
+import { Astroid } from "./World/Solar_System/Astroid.js";
 
 var renderer = document.getElementById("renderer");
 var ctx = renderer.getContext("2d");
 var running = true;
 
-var planet = new Planet(100, 100, 24);
+var planet = new Planet(100, 100, 24, 1)
+    .makeRandPlanet();
+
+var astroid = new Astroid(450, 500, 10)
+    .makeRandAstroid();
+var sun = new SolarMass(650, 300, 150, 5, 35, "red");
 
 function init() {
     //game instance setup
     //renderer.style.width = `${document.body.clientWidth}px`;
     //renderer.style.height = `${document.body.clientHeight}px`;
-    const scale = window.devicePixelRatio;
-    renderer.width = Math.floor(document.body.clientWidth * scale);
-    renderer.height = Math.floor(document.body.clientHeight * scale);
+    renderer.width = Math.floor(document.body.clientWidth * 0.75);
+    renderer.height = Math.floor(document.body.clientHeight * 0.75);
     ctx.transform(1, 0, 0, -1, 0, renderer.height);
 
-    Planet.makeRandPlanet(planet);
     console.log(planet);
+    console.log(astroid);
     console.log(SquareRegistry);
     requestAnimationFrame(tick);
 }
 
 function update() {
-    planet.update();
+    planet.update(1);
 }
 
 function render() {
+    var viewBox = {x: 0, y: 0, width: renderer.width, height: renderer.height};
     ctx.strokeRect(0, 0, renderer.width, renderer.height);
-    planet.draw(ctx, {x: 50, y: 50, width: 450, height: 150});
+    planet.draw(ctx, viewBox);
+    sun.draw(ctx, viewBox);
+    astroid.draw(ctx, viewBox);
 }
 
 //event listeners
@@ -53,9 +63,8 @@ renderer.addEventListener("wheel", (e) => {
 function resize() {
     //renderer.style.width = `${document.body.clientWidth}px`;
     //renderer.style.height = `${document.body.clientHeight}px`;
-    const scale = window.devicePixelRatio;
-    renderer.width = Math.floor((document.body.clientWidth * 0.75) * scale);
-    renderer.height = Math.floor((document.body.clientHeight * 0.75) * scale);
+    renderer.width = Math.floor(document.body.clientWidth * 0.75);
+    renderer.height = Math.floor(document.body.clientHeight * 0.75);
 
     ctx.transform(1, 0, 0, -1, 0, renderer.height);
 }

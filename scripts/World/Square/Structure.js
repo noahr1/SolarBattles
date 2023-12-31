@@ -1,3 +1,5 @@
+import { SquareRegistry } from "./Square";
+
 var Directions = {
     "north": 0,
     "south": 180,
@@ -15,12 +17,14 @@ var Model = {
     }
 };
 
-var StructureBinaryData = {
-    "direction": "north",
-    "status": "idle",
-    "recipes": [],
-    "name": ""
-};
+function blankSBD() {
+    return {
+        "direction": "north",
+        "status": "idle",
+        "recipes": [],
+        "name": ""
+    }
+}
 
 function degreesToRadians(degrees) {
     return degrees * Math.PI / 180;
@@ -52,10 +56,19 @@ class Structure {
         ctx.save();
         ctx.translate(this.x + this.model.width / 2, this.y + this.model.height / 2);
         ctx.rotate(degreesToRadians(Directions[this.sbd["direction"]]));
-        ctx.translate(-this.x + this.model.width / 2, this.y + this.model.height / 2);
+        ctx.translate(-this.x + this.model.width / 2, -this.y + this.model.height / 2);
         //draw the structure
-        ctx.drawImage(this.model.states[this.sbd["status"]][this.sbd["direction"]], this.x, this.y);
+        ctx.drawImage(this.model.states[this.sbd["status"]]["model"], this.x, this.y);
         //restore the saved canvas
         ctx.restore();
     }
 }
+
+class Weapon extends Structure {
+    constructor(x, y, model, sbd, gui=null) {
+        super(x, y, model, sbd, gui);
+    }
+}
+
+SquareRegistry.addSquare(Structure);
+SquareRegistry.addSquare(Weapon);
