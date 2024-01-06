@@ -1,5 +1,3 @@
-import { SquareRegistry } from "./Square";
-
 var Directions = {
     "north": 0,
     "south": 180,
@@ -7,7 +5,7 @@ var Directions = {
     "east": 270
 };
 
-var Model = {
+/*var Model = {
     width: 8,
     height: 17,
     states: {
@@ -15,7 +13,7 @@ var Model = {
             "model": resourceLoader("../../../assets/structures/example.png")
         }
     }
-};
+};*/
 
 function blankSBD() {
     return {
@@ -70,5 +68,3 @@ class Weapon extends Structure {
     }
 }
 
-SquareRegistry.addSquare(Structure);
-SquareRegistry.addSquare(Weapon);

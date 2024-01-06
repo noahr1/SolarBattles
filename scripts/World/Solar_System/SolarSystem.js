@@ -8,7 +8,7 @@ class SolarSystem {
         this.star = undefined;
     }
     generateRandomSystem() {
-
+        
         return this;
     }
 }

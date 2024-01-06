@@ -1,5 +1,3 @@
-import { SquareRegistry } from "../Square/Square.js";
-
 function getAugmentCenterDist(x, y, astroid) {
     const x2 = astroid.x + (astroid.radius);
     const y2 = astroid.y + (astroid.radius);
@@ -26,8 +24,7 @@ function getDist(x, y, astroid) {
 function getSquare(x, y, astroid, register) {
     var dist = getDist(x, y, astroid);
 
-    const RockSquare = register.getSquare(1);
-    astroid.squares.push(new RockSquare(astroid.x + x * 8, astroid.y + y * 8, 64, {"stone": 51, "silica": 49}));
+    //astroid.squares.push(new RockSquare(astroid.x + x * 8, astroid.y + y * 8, 64, {"stone": 51, "silica": 49}));
     astroid.mass += 64;
 }
 
@@ -69,10 +66,10 @@ export class Astroid {
     makeRandAstroid() {
         this.squares = [];
         var diameter = this.radius * 2;
-        for(var h = 0; h < diameter; h++) {
-            for(var w = 0; w < diameter; w++) {
+        for(var h = 0; h < diameter + 1; h++) {
+            for(var w = 0; w < diameter + 1; w++) {
                 if(getAugmentCenterDist(w, h, this)) {
-                    getSquare(w, h, this, SquareRegistry);
+                    //getSquare(w, h, this, SquareRegistry);
                 }
             }
         }

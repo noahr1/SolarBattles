@@ -1,153 +1,104 @@
+import { gSize } from "../../script.js";
+import { Register } from "./register.js";
+
+var PropertyRegistry = new Register()
+    .add("mass")
+    .add("color")
+    .add("nutrients")
+    .add("volume");
+
+class Property {
+    constructor(key, value) {
+        this.key = key;
+        this.value = value;
+    }
+    getValue() {
+        return this.value;
+    }
+    setValue(value) {
+        this.value = value;
+    }
+}
+
+class Properties {
+    constructor() {
+        this.properties = [];
+    }
+    addProperty(property) {
+        this.properties.push(property);
+    }
+    createProperty(key, value) {
+        this.properties.push(new Property(key, value));
+    }
+    addMultiProperties(properties) {
+        for(var property of properties) {
+            this.properties.push(property);
+        }
+    }
+    cloneProperty(key, clone) {
+        var property = this.getProperty(key);
+        clone.property = property;
+    }
+    cloneProperties(clone) {
+        clone.properties = this.properties;
+    }
+    copyProperty(key) {
+        var property = this.getProperty(key);
+        return property;
+    }
+    copyProperties() {
+        return this.properties;
+    }
+    getLength() {
+        return this.properties.length;
+    }
+    getProperty(key) {
+        for(var property of this.properties) {
+            if(property.key == key){
+                return property.value;
+            }
+        }
+    }
+}
+
 class Square {
-    constructor(x, y, mass) {
+    constructor(x, y, properties=[]) {
         this.x = x;
         this.y = y;
-        this.mass = mass;
         this.scale = 1;
+        this.size = gSize * this.scale;
+        this.cx = x + this.size / 2;
+        this.cy = y + this.size / 2;
+        this.vx = 0;
+        this.vy = 0;
+        this.fx = 0;
+        this.fy = 0;
+        this.properties = properties;
     }
-    getX() {
-        return this.x;
-    }
-    getY() {
-        return this.y;
-    }
-    getListIndex(list) {
-        return list.indexOf(this);
-    }
-    setX(newX) {
-        this.x = newX;
-    }
-    setY(newY) {
-        this.y = newY;
-    }
-    setMass(newMass) {
-        this.mass = newMass;
-    }
-    setMState(newMState) {
-        this.matterState = newMState;
-    }
-}
-
-class SquareRegister {
-    constructor() {
-        this.squareTypes = [];
-    }
-    addSquare(listItem) {
-        if(typeof listItem == "function") {
-            this.squareTypes.push(listItem);
-            return this.squareTypes.length - 1;
+    update() {
+        var ax = 0, ay = 0;
+        if(this.properties.getLength()) {
+            ax = fx / this.properties.getProperty("mass");
+            ay = fy / this.properties.getProperty("mass");
         }
-    }
-    removeSquare(index) {
-        if(index > -1) {
-            this.squareTypes.splice(index, 1);
-        }
-    }
-    getSquare(index) {
-        return this.squareTypes[index];
-    }
-}
 
-const SquareRegistry = new SquareRegister();
+        this.vx += ax;
+        this.vy += ay;
 
-Number.prototype.clamp = function(min, max) {
-    return Math.min(Math.max(this, min), max);
-}
+        this.x += this.vx;
+        this.y += this.vy;
 
-class RockSquare extends Square {
-    constructor(x, y, mass, mineralContent) {
-        super(x, y, mass);
-        this.mineralContent = mineralContent;
+        this.size *= this.scale;
     }
-    getMineralContent() {
-        return this.mineralContent;
-    }
-    setMineralContent(newMineralContent) {
-        this.mineralContent = newMineralContent;
+    applyForce(fx, fy) {
+        this.fx += fx;
+        this.fy += fy;
     }
     draw(ctx) {
-        ctx.strokeRect(this.x, this.y, 8, 8);
-        ctx.fillStyle = "gray";
-        ctx.fillRect(this.x, this.y, 8, 8);
+        ctx.fillStyle = this.properties.getProperty("color");
+        ctx.fillRect(this.x, this.y , this.size, this.size);
     }
 }
 
-class GrassSquare extends Square {
-    constructor(x, y, mass, nutrients, moisture) {
-        super(x, y, mass);
-        this.nutrients = nutrients;
-        this.moisture = moisture;
-        this.health = 100;
-    }
-    getNutrients() {
-        return this.nutrients;
-    }
-    setNutrients(nutrients) {
-        this.nutrients = nutrients;
-    }
-    getMoisture() {
-        return this.moisture;
-    }
-    setMoisture(moisture) {
-        this.moisture = moisture;
-    }
-    getHealth() {
-        return this.health;
-    }
-    setHealth(health) {
-        this.health = health;
-    }
-    calcHealth() {
-        var helathFactor = this.nutrients + this.moisture * 0.75;
-        var deductedHealth = (helathFactor >= 15) ? 15 - helathFactor : -(15 - helathFactor); 
-        this.health += deductedHealth;
-        this.health.clamp(0, 100);
-    }
-    draw(ctx) {
-        ctx.strokeRect(this.x, this.y, 8, 8);
-        ctx.fillStyle = "green";
-        ctx.fillRect(this.x, this.y, 8, 8);
-    }
-}
 
-class SoilSquare extends Square {
-    constructor(x, y, mass) {
-        super(x, y, mass)
-    }
-    draw(ctx) {
-        ctx.strokeRect(this.x, this.y, 8, 8);
-        ctx.fillStyle = "rgb(131,101,57)";
-        ctx.fillRect(this.x, this.y, 8, 8);
-    }
-}
-
-class WaterSquare extends Square {
-    constructor(x, y, mass, volume) {
-        super(x, y, mass);
-        this.volume = volume;
-    }
-    draw(ctx) {
-        ctx.fillStyle = "blue";
-        ctx.fillRect(this.x, this.y, 8, 8);
-    }
-}
-
-class OilSquare extends Square {
-    constructor(x, y, mass, volume) {
-        super(x, y, mass);
-        this.volume = volume;
-    }
-    draw(ctx) {
-        ctx.fillStyle = "black";
-        ctx.fillRect(this.x, this.y, 8, 8);
-    }
-}
-
-SquareRegistry.addSquare(Square);
-SquareRegistry.addSquare(RockSquare);
-SquareRegistry.addSquare(GrassSquare);
-SquareRegistry.addSquare(SoilSquare);
-SquareRegistry.addSquare(WaterSquare);
-SquareRegistry.addSquare(OilSquare);
-
-export { SquareRegistry };
+export { Square };

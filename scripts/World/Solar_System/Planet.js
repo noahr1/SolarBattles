@@ -1,5 +1,4 @@
 //imports
-import { SquareRegistry } from "../Square/Square.js";
 import { perlin } from "../../Utils/Perlin.js";
 
 function getDistCenter(x, y, planet) {
@@ -28,33 +27,26 @@ function getBlock(w, h, planet, register) {
     var dist = getDist(w, h, planet);
     perlin.seed();
 
-    //Square Implementations
-    const RockSquare = register.getSquare(1);
-    const GrassSquare = register.getSquare(2);
-    const SoilSquare = register.getSquare(3);
-    const WaterSquare = register.getSquare(4);
-    const OilSquare = register.getSquare(5);
-
     var frequency = 13.5;
     var seed = (Math.random() * frequency * 15.5) * Math.E;
 
     //Square Conditionals
-    if(dist >= planet.radius - 1) {
-        planet.squares.push(new GrassSquare(planet.x + w * 8, planet.y + h * 8, 64, 15, 15));
-        planet.mass += 64;
-    }else if(dist >= planet.radius - 4) {
-        planet.squares.push(new SoilSquare(planet.x + w * 8, planet.y + h * 8, 64));
-        planet.mass += 64;
-    }else {
-        if(perlin.get((w * frequency) + seed, (h * frequency) + seed) <= 0.28){
-            planet.squares.push(new RockSquare(planet.x + w * 8, planet.y + h * 8, 64, {"stone": 51, "silica": 49}));
-            planet.mass += 64;
-        }else {
-            var volume = Math.floor(Math.random() * 64) + 1;
-            planet.squares.push(new WaterSquare(planet.x + w * 8, planet.y + h * 8, 64, volume));
-            planet.mass += volume;
-        }
-    }
+    //if(dist >= planet.radius - 1) {
+    //    planet.squares.push(new GrassSquare(planet.x + w * 8, planet.y + h * 8, 64, 15, 15));
+    //    planet.mass += 64;
+    //}else if(dist >= planet.radius - 4) {
+    //    planet.squares.push(new SoilSquare(planet.x + w * 8, planet.y + h * 8, 64));
+    //    planet.mass += 64;
+    //}else {
+    //    if(perlin.get((w * frequency) + seed, (h * frequency) + seed) <= 0.28){
+    //        planet.squares.push(new RockSquare(planet.x + w * 8, planet.y + h * 8, 64, {"stone": 51, "silica": 49}));
+    //        planet.mass += 64;
+    //    }else {
+    //        var volume = Math.floor(Math.random() * 64) + 1;
+    //        planet.squares.push(new WaterSquare(planet.x + w * 8, planet.y + h * 8, 64, volume));
+    //        planet.mass += volume;
+    //    }
+    //}
 }
 
 export class Planet {
@@ -106,10 +98,10 @@ export class Planet {
     makeRandPlanet() {
         this.squares = [];
         var planetD = this.radius * 2;
-        for(var h = 0; h < planetD; h++) {
-            for(var w = 0; w < planetD; w++) {
+        for(var h = 0; h < planetD + 1; h++) {
+            for(var w = 0; w < planetD + 1; w++) {
                 if(getDistCenter(w, h, this)) {
-                    getBlock(w, h, this, SquareRegistry);
+                    //getBlock(w, h, this, SquareRegistry);
                 }
             }
         }
