@@ -4,7 +4,11 @@ const socketIO = require('socket.io');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'https://noahr1.github.io/SolarBattles/',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Enable cookies and authentication headers
+}));
 const server = http.createServer(app);
 const io = socketIO(server);
 

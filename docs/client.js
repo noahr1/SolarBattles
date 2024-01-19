@@ -1,5 +1,5 @@
 // Connect to the Socket.io server
-const socket = io(environment === 'production' ? 'https://noahr1.github.io/SolarBattles' : 'http://localhost:3000');
+const socket = io();
 
 
 // Handle form submission for chat messages
@@ -15,7 +15,7 @@ document.querySelector('form').addEventListener('submit', function(event) {
   }
 });
 
-console.log("is this working?");
+console.log(environment === 'production' ? 'https://noahr1.github.io/SolarBattles' : 'http://localhost:3000');
 
 // Handle incoming chat messages
 socket.on('chat message', function(msg) {
