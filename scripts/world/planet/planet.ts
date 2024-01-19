@@ -1,5 +1,5 @@
 import { Vector } from "../../utilities/vectors";
-import { Square, SquareTypes } from "../squares/square";
+import { Square, SquareTypes, Property } from "../squares/square";
 
 export class Planet {
     position: Vector;
@@ -18,7 +18,7 @@ export class Planet {
             for(var y = 0; y < diameter; y++) {
                 var dist = Math.sqrt(Math.pow(this.centerpos.x - x, 2) + Math.pow(this.centerpos.y - y, 2));
                 if(dist <= this.radius) {
-                    this.squares.push(new Square(new Vector(x, y), 8, SquareTypes.RockSquare));
+                    this.squares.push(new Square(new Vector(x, y), new Vector(0, 0), [new Property()], SquareTypes.RockSquare));
                 }
             }
         }

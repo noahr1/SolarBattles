@@ -7,7 +7,7 @@ export enum SquareTypes {
 
 export const GlobalScale = 8;
 
-class Property {
+export class Property {
 
 }
 
