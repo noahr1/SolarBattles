@@ -1,0 +1,16 @@
+{
+    "width": 8,
+    "height": 8,
+    "states": {
+        "idle": {
+            "model": "IdleModel"
+        },
+        "active": {
+            "model": "ActiveModel"
+        }
+    },
+    "textures": {
+        "IdleModel": "model_path",
+        "ActiveModel": "model_path"
+    }
+}

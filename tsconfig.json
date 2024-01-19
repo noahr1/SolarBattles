@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+      "target": "es5",
+      "outDir": "./outputScripts", 
+      "rootDir": "./scripts"
+    },
+    "include": [
+      "scripts/**/*.ts"      
+    ],
+    "exclude": [
+      "node_modules"     
+    ]
+}

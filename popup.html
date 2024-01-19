@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movable Pinnable Popup</title>
+</head>
+<style>
+    #popup {
+        display: none;
+        position: absolute;
+        width: 200px;
+        height: 150px;
+        border: 2px solid black;
+        z-index: 9999;
+    }
+
+    #popup-header {
+        padding: 10px;
+        display: flex;
+        border-bottom: 2px solid black;
+        justify-content: space-between;
+        align-items: center;
+        cursor: grab;
+    }
+
+    #popup-header button {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    #close-btn {
+        margin-left: auto; /* Push the close button to the right */
+    }
+
+    #pin-btn {
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+        background-color: transparent;
+        border: none;
+        margin-left: 5px;
+        position: relative;
+    }
+
+    #pin-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 4px;
+        height: 8px;
+        background-color: #333;
+        transform: translateX(-50%);
+    }
+
+    #pin-btn.pinned::before {
+        background-color: #f00;
+    }
+
+    #pin-btn:hover {
+        background-color: #f00;
+    }
+
+    #popup-content {
+        padding: 10px;
+    }
+</style>
+<body>
+
+<button onclick="openPopup()">Open Popup</button>
+
+<div id="popup">
+    <div id="popup-header">
+        Movable Popup
+        <button id="pin-btn" onclick="togglePin()"></button>
+        <button id="close-btn" onclick="closePopup()">X</button>
+    </div>
+    <div id="popup-content">
+        <!-- Content goes here -->
+        <p>This is a movable and pinnable popup.</p>
+    </div>
+</div>
+
+<script>
+    let isPinned = false;
+
+    const popup = document.getElementById("popup");
+    const popupHeader = document.getElementById("popup-header");
+    const pinBtn = document.getElementById("pin-btn");
+
+    // Initial styles
+    popup.style.position = "absolute";
+
+    popupHeader.style.cursor = "grab";
+
+    document.getElementById("popup-content").style.padding = "10px";
+
+    // Make the popup movable
+    dragElement(popup);
+
+    function dragElement(elmnt) {
+        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+        popupHeader.onmousedown = dragMouseDown;
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+
+            // Check if the popup is pinned before updating its position
+            if (!isPinned) {
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+        }
+
+        function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+
+    // Toggle pin state
+    function togglePin() {
+        isPinned = !isPinned;
+        popup.style.position = isPinned ? "fixed" : "absolute";
+        pinBtn.classList.toggle("pinned", isPinned);
+    }
+
+    // Close the popup
+    function closePopup() {
+        popup.style.display = "none";
+    }
+
+    // Open the popup
+    function openPopup() {
+        popup.style.display = "block";
+    }
+</script>
+
+</body>
+</html>
